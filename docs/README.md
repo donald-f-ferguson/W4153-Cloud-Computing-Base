@@ -49,6 +49,10 @@ The primary contribution to the final grade is the team project. The course defi
 that the projects must correctly use in their implementations. Teams also write interim status and architecture
 reports.
 
+## Course Calendar
+
+<iframe src="https://calendar.google.com/calendar/embed?src=c_20e9e0f50614367e628dd2152506a45acbdaf8d9ff22207ef9c1c3807f11ace5%40group.calendar.google.com&ctz=America%2FNew_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+
 ## Syllabus
 
 __Note:__
