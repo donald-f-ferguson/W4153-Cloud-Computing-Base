@@ -80,5 +80,5 @@ So, we will adapt based on progress.
 
 ## Lectures
 
-- [Lecture 1 - Introduction and Concepts](Lectures/W4153-2024F-1-Introduction-Concepts/W4153-2024F-1-Introduction-Concepts-V5.pdf)
+- [Lecture 1 - Introduction and Concepts](https://github.com/donald-f-ferguson/W4153-Cloud-Computing-Base/blob/dad4dc930692d6dfdc60ae34fa8dd8e2c942d7a9/Lectures/W4153-2024F-1-Introduction-Concepts/W4153-2024F-1-Introduction-Concepts-V5.pdf)
 - 
