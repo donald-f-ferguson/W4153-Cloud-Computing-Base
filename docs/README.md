@@ -1,5 +1,12 @@
 # W4153 - Cloud Computing
 
+## Contents
+
+This document is the course overview.
+
+Related documents:
+- [Project 1 instructions](P1/README.md)
+
 ## Overview
 
 The core/base repository for Columbia University's Department of Computer Science
