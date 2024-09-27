@@ -89,3 +89,5 @@ So, we will adapt based on progress.
 
 - [Lecture 1 - Introduction and Concepts](https://github.com/donald-f-ferguson/W4153-Cloud-Computing-Base/blob/dad4dc930692d6dfdc60ae34fa8dd8e2c942d7a9/Lectures/W4153-2024F-1-Introduction-Concepts/W4153-2024F-1-Introduction-Concepts-V5.pdf)
 - [Lecture 2 - REST-Microservices-IaaS](https://github.com/donald-f-ferguson/W4153-Cloud-Computing-Base/blob/68f2bd11e4b1eaa26b3d5b46cb7359e0ba3b1ea7/Lectures/W4153-2024F-2-REST-Microservices-IaaS/W4153-2024F-2-REST-Microservices-IaaS-V2.pdf)
+- [Lecture 3 - REST2-Microservices2-CaaS](https://github.com/donald-f-ferguson/W4153-Cloud-Computing-Base/blob/main/Lectures/W4153-2024F-3-REST2-Microservices2-CaaS_WebContent-DB/W4153-2024F-3-REST2-Microservices2-CaaS-web_content-DB.pdf)
+- [Lecture 4 - Web-Content-Microservices-DB-OAuth](https://github.com/donald-f-ferguson/W4153-Cloud-Computing-Base/blob/main/Lectures/W4153-2024F-REST(3)-Microservices-WebContent/W4153-2024F-4-Web-Content-Microservices-DB-OAuth2.pdf)
