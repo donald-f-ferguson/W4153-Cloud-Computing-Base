@@ -1,12 +1,27 @@
+import json
+
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import RedirectResponse
 from authlib.integrations.starlette_client import OAuth
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.config import Config
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, HTMLResponse
+import requests
 import os
+
+# This is a "hack" to avoid setting environment variables.
+# set_env.py is a python file in the local directory that has the
+# secret information needed to call the API.
+#
+# DO NOT ADD THIS FILE TO GITHUB
+#
+# To see an example of the format, look at sample_set_env.py. You can use this
+# example to create your own set_env.py
+#
 import set_env
+
+from time import sleep
 
 # Load environment variables from a .env file (containing GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET)
 # from dotenv import load_dotenv
@@ -32,20 +47,6 @@ config = Config(environ={
 })
 oauth = OAuth(config)
 
-'''
-oauth.register(
-    name='google',
-    client_id=config.get('GOOGLE_CLIENT_ID'),
-    client_secret=config.get('GOOGLE_CLIENT_SECRET'),
-    authorize_url='https://accounts.google.com/o/oauth2/auth',
-    authorize_params=None,
-    access_token_url='https://accounts.google.com/o/oauth2/token',
-    access_token_params=None,
-    refresh_token_url=None,
-    redirect_uri='http://localhost:5001/auth',
-    client_kwargs={'scope': 'openid profile email'}
-)
-'''
 
 google = oauth.register(
     name='google',
@@ -62,7 +63,47 @@ google = oauth.register(
     jwks_uri = "https://www.googleapis.com/oauth2/v3/certs"
 )
 
+profile_url = "https://www.googleapis.com/oauth2/v3/userinfo"
+
+
+def get_response_html(profile):
+
+    name = profile["name"]
+    picture = profile["picture"]
+    email = profile["email"]
+
+    html = f"""
+    <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Login Result</title>
+        </head>
+        <body>
+        <h1>Login Success!</h1>
+        Full name: {name}<br>
+        Email: {email}<br>
+        <br>
+        <a href="{picture}">Profile Picture</a>
+        </body>
+    </html>
+    """
+
+    return html
+
+
 def get_user_info(access_token):
+    auth = "Bearer " + access_token
+    headers = {"Authorization": auth}
+    rsp = requests.get(profile_url, headers=headers)
+
+    try:
+        result = rsp.json()
+    except Exception as e:
+        print("get_user_info: Exception = ", e)
+        result = None
+
+    return result
 
 
 @app.get('/')
@@ -80,6 +121,8 @@ async def auth(request: Request):
     # Get the token and user info after user authorization
     try:
         token = await oauth.google.authorize_access_token(request)
+        access_token = token.get("access_token")
+
         # user = await oauth.google.parse_id_token(token)
         user = token.get('userinfo')
        # user2 = await oauth.google.parse_id_token(request, token)
@@ -88,7 +131,13 @@ async def auth(request: Request):
         # request.session['user'] = dict(user)
         print("User = ", user)
 
-        return JSONResponse({"message": "Login successful", "user": user})
+        profile = get_user_info(access_token)
+        print("Full profile = \n", json.dumps(profile, indent=2))
+
+        result_html = get_response_html(profile)
+
+        # return JSONResponse({"message": "Login successful", "user profile": profile})
+        return HTMLResponse(result_html)
     except Exception as e:
         raise HTTPException(status_code=400, detail="Authentication failed")
 
