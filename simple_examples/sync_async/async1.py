@@ -1,16 +1,24 @@
+import json
+
 import aiohttp
 import asyncio
 import time  # Import time to measure execution duration
 
+urls = [
+    {"rel": "courses", "href": "https://virtserver.swaggerhub.com/Columbia-Classes/CourseInfo/1.0/courses?uni=ab123"},
+    {"rel": "teams", "href": "https://virtserver.swaggerhub.com/Columbia-Classes/TeamsInfo/1.0/teams?uni=ab1234"},
+    {"rel": "person", "href": "https://virtserver.swaggerhub.com/Columbia-Classes/PersonInfo/1.0/persons/dff9"}
+]
 
-async def get_project_info(uni):
-    url = f"https://virtserver.swaggerhub.com/Columbia-Classes/ProjectInfoV3/1/projects?uni={uni}"
+
+async def get_url(url):
 
     async with aiohttp.ClientSession() as session:
         try:
             async with session.get(url) as response:
                 response.raise_for_status()  # Check if the request was successful
-                return await response.json()  # Return the JSON response
+                result = await response.json()  # Return the JSON respons
+                return result
         except aiohttp.ClientResponseError as err:
             print(f"HTTP error occurred: {err}")
             return None
@@ -19,10 +27,23 @@ async def get_project_info(uni):
             return None
 
 
-async def call_api_three_times(uni):
+async def get_all_urls(urls):
     """Encapsulates the API call logic to call the API three times asynchronously."""
-    tasks = [get_project_info(uni) for _ in range(3)]  # Create 3 tasks
-    return await asyncio.gather(*tasks)  # Run tasks concurrently and gather results
+    tasks = []
+    properties = []
+    for u in urls:
+        properties.append(u["rel"])
+        tasks.append(get_url(u["href"]))
+    all_results = await asyncio.gather(*tasks)  # Run tasks concurrently and gather results
+    full_result = {}
+
+    for i in range(0, len(properties)):
+        p = properties[i]
+        v = all_results[i]
+        final_v = v.get(p, v)
+        full_result[p] = final_v
+
+    return full_result
 
 
 # Example usage:
@@ -33,14 +54,13 @@ async def main():
     start_time = time.time()
 
     # Call API three times asynchronously
-    project_info_list = await call_api_three_times(uni)
+    result = await get_all_urls(urls)
 
     # Calculate total execution time
     total_time = time.time() - start_time
 
     # Print all the responses
-    for i, project_info in enumerate(project_info_list):
-        print(f"Response {i + 1}: {project_info}")
+    print("Full result = ", json.dumps(result, indent=2))
 
     # Print total execution time
     print(f"Total execution time: {total_time:.2f} seconds")

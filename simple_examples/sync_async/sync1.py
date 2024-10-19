@@ -1,10 +1,16 @@
+import json
+
 import requests
 import time  # Import time to measure execution duration
 
+urls = [
+    {"rel": "courses", "href": "https://virtserver.swaggerhub.com/Columbia-Classes/CourseInfo/1.0/courses?uni=ab123"},
+    {"rel": "teams", "href": "https://virtserver.swaggerhub.com/Columbia-Classes/TeamsInfo/1.0/teams?uni=ab1234"},
+    {"rel": "person", "href": "https://virtserver.swaggerhub.com/Columbia-Classes/PersonInfo/1.0/persons/dff9"}
+]
 
-def get_project_info(uni):
-    url = f"https://virtserver.swaggerhub.com/Columbia-Classes/ProjectInfoV3/1/projects?uni={uni}"
 
+def call_get(url):
     try:
         response = requests.get(url)
         response.raise_for_status()  # Check if the request was successful
@@ -17,32 +23,34 @@ def get_project_info(uni):
         return None
 
 
-def call_api_three_times(uni):
-    """Encapsulates the API call logic to call the API three times synchronously."""
-    responses = []
-    for i in range(3):
-        print(f"Calling API attempt {i + 1}...")
-        result = get_project_info(uni)
-        responses.append(result)
-    return responses
+def call_get_urls(urls):
 
+    result = {}
+
+    for u in urls:
+        r = call_get(u["href"])
+        t = r.get(u["rel"],r)
+        result[u["rel"]] = t
+
+    return result
 
 # Example usage:
 def main():
-    uni = 'dff9'
 
     # Start measuring time
     start_time = time.time()
 
     # Call API three times synchronously
-    project_info_list = call_api_three_times(uni)
+    full_result = call_get_urls(
+        urls
+    )
 
     # Calculate total execution time
     total_time = time.time() - start_time
 
     # Print all the responses
-    for i, project_info in enumerate(project_info_list):
-        print(f"Response {i + 1}: {project_info}")
+    print("The full response = \n",
+          json.dumps(full_result, indent=2))
 
     # Print total execution time
     print(f"Total execution time: {total_time:.2f} seconds")
