@@ -24,7 +24,15 @@ view are:
 | __Resource Model and Microservice Logical View__ |
 
 
+You can see a simple, first pass at the API definitions of the composite microservices on SwaggerHub:
+- [Person](https://app.swaggerhub.com/apis/Columbia-Classes/PersonInfo/1.0)
+- [Teams](https://app.swaggerhub.com/apis/Columbia-Classes/TeamsInfo/1.0)
+- [Course](https://app.swaggerhub.com/apis/Columbia-Classes/CourseInfo/1.0)
 
+This is a very simple example of [API First Approach](https://swagger.io/resources/articles/adopting-an-api-first-approach/).
+The team building the overall system consists of several microservice specific teams. A microservice team's first
+task is to provide an API with a simple mock implementation that enables other teams to begin their design
+and implementation.
 
 
 The sample output is:
