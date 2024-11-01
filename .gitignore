@@ -1,4 +1,4 @@
 .idea/*
 /Lectures/W4153-2024F-1-Introduction-Concepts/old/
 /simple_examples/.env
-/simple_examples/set_env.py
+/simple_examples/google_login/set_env.py
